@@ -19,6 +19,8 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
     private $_logs = array();
     private $_global_results = array();
 
+    protected $output = array();
+
     public function checkAction() {
 
         ini_set("auto_detect_line_endings", true);
@@ -37,7 +39,7 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
         $this->getLogs();
 
         /* send the response */
-        Mage::app()->getResponse()->setBody();
+        Mage::app()->getResponse()->setBody(implode("\n", $this->output));
     }
 
     private function getMagento() {
@@ -226,7 +228,7 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
     private function getLogs() {
 
         try {
-            echo "\n===== EXCEPTION LOG =====\n";
+            $this->log("\n===== EXCEPTION LOG =====\n");
             /* get list of log files */
             if ($h = opendir($this->_logpath)) {
 
@@ -235,7 +237,7 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
 
                     /* we don't want . and ..
                      * modified to only check exception.log for now. will remove if needed
-                     * but it felt extaneous.
+                     * but it felt extraneous.
                      */
                     if ($entry !== "." && $entry !== ".." && $entry == "exception.log") {
 
@@ -266,7 +268,7 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
                             }
                         } else {
                             /* couldn't read the file */
-                            echo "Could not read ". $logname ." log.\n";
+                            $this->log("Could not read ". $logname ." log.\n");
                         }
 
                         $newa = array(); // new temporary array to store lines
@@ -290,9 +292,9 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
                             if($buffer !== "") {
                                 foreach($newa as $k => $v) {
                                     if($cnt == $k) {
-                                        echo $buffer ."\n";
+                                        $this->log($buffer);
                                         if($v == 0) {
-                                            echo "\n---------- snip ----------\n\n";
+                                            $this->log("\n---------- snip ----------\n");
                                         }
                                     }
                                 }
@@ -312,6 +314,16 @@ class Amazon_Diagnostics_Adminhtml_DiagnosticsController extends Mage_Adminhtml_
     }
 
     private function log($s) {
-        echo $s ."\n";
+        $this->output[] = $s;
+    }
+
+    /**
+     * Acl checking
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('system/config/amazon_payments');
     }
 }

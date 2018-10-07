@@ -71,7 +71,17 @@ abstract class Amazon_Payments_Controller_Checkout extends Mage_Checkout_Control
 
             if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
                 if ($this->_getConfig()->isLoginEnabled() || !$this->_getOnepage()->getQuote()->isAllowedGuestCheckout()) {
-                    $customer = $_amazonLogin->loginWithToken($token, $this->getRequest()->getParam('account_login') ? 'customer/account' : $this->_checkoutUrl);
+                    /** @var Amazon_Payments_Model_Customer $customer */
+                    $customer = $_amazonLogin->loginWithToken($token);
+                    if (is_array($customer)) {
+                        Mage::app()->getResponse()
+                            ->setRedirect(
+                                Mage::helper('amazon_payments')->getVerifyUrl() . '?redirect=' . $this->getRequest()->getParam('account_login') ? 'customer/account' : $this->_checkoutUrl,
+                                301
+                            )
+                            ->sendResponse();
+                        return;
+                    }
                 }
                 // Guest
                 else {

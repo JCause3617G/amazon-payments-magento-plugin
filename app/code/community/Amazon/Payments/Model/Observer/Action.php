@@ -29,10 +29,15 @@ class Amazon_Payments_Model_Observer_Action
     {
         if ($this->_shouldRedirectCart() && !Mage::app()->getStore()->isCurrentlySecure()) {
             $redirectUrl = Mage::getUrl('checkout/cart/', array('_forced_secure' => true));
-            Mage::app()->getResponse()
+
+            /** @var Mage_Core_Controller_Front_Action $controllerAction */
+            $controllerAction = $observer->getControllerAction();
+            $controllerAction->setFlag('',
+                Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true
+            );
+            $controllerAction->getResponse()
                 ->setRedirect($redirectUrl)
                 ->sendResponse();
-            exit;
         }
     }
 

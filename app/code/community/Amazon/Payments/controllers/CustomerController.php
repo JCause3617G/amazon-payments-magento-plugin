@@ -25,7 +25,16 @@ class Amazon_Payments_CustomerController extends Mage_Core_Controller_Front_Acti
         }
 
         if ($token) {
+            /** @var Amazon_Payments_Model_Customer $customer */
             $customer = Mage::getModel('amazon_payments/customer')->loginWithToken($token);
+
+            // Redirect if needed
+            if ($customer->isRedirect()) {
+                Mage::app()->getResponse()
+                    ->setRedirect(Mage::helper('amazon_payments')->getVerifyUrl(), 301)
+                    ->sendResponse();
+                return;
+            }
 
             if ($customer->getId()) {
                 $this->_redirectUrl(Mage::helper('customer')->getDashboardUrl());

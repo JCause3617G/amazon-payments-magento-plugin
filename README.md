@@ -1,21 +1,23 @@
-## Quick Start - Login and Pay with Amazon for Magento
+## Amazon Pay and Login with Amazon for Magento
 
 [View the Complete User Guide](https://github.com/amzn/amazon-payments-magento-plugin/wiki)
-or [Learn More about Amazon Payments] (https://payments.amazon.com/sp/magento)
+or [Learn More about Amazon Pay](https://pay.amazon.com/sp/magento)
 
 
 ### Pre-Requisites
-* Magento CE 1.6+ or EE 1.11+.
+* Magento CE 1.7+ or EE 1.11+.
     * Magento 1.5 is supported with a patch see [here](https://github.com/amzn/amazon-payments-magento-plugin/wiki/Community-and-FAQ#q-i-am-on-magento-ce-15-or-magento-ee-110-can-i-use-amazon-payments) for more information
+    * Magento 1.6 is supported with a fix explained in [issue #264](https://github.com/amzn/amazon-payments-magento-plugin/issues/264)
 * SSL is installed on your site and active on Checkout and Login pages
 * Compilation is turned off in your Magento system
 
+**NOTE:** If you are based in the UK or EU, please check out our [Amazon Pay and Login with Amazon for Europe](https://www.magentocommerce.com/magento-connect/amazon-pay-and-login-with-amazon-for-europe.html) extension.
 
 ### Installation
 > **NOTE** Before you begin, make a backup of your Magento site.
 
 * Using Magento Connect (Recommended):
-    * http://www.magentocommerce.com/magento-connect/pay-with-amazon-for-magento.html
+    * https://marketplace.magento.com/amzn-login-and-pay-for-magento.html
 * Using Manual Installation:
     * Click the Download Zip button and save to your local machine
     * Transfer the zip file to your Magento webserver
@@ -29,8 +31,8 @@ or [Learn More about Amazon Payments] (https://payments.amazon.com/sp/magento)
 ### Uninstall/Disable
 
    * From the command line edit the files: 
-      ** `<magento_root>/app/etc/modules/Amazon_Login.xml` (in versions <= 1.3.1)
-      ** `<magento_root>/app/etc/modules/Amazon_Payments.xml`
+      * `<magento_root>/app/etc/modules/Amazon_Login.xml` (in versions <= 1.3.1)
+      * `<magento_root>/app/etc/modules/Amazon_Payments.xml`
    * In each file, change the line
       `<active>true</active>`
       to
@@ -41,8 +43,8 @@ or [Learn More about Amazon Payments] (https://payments.amazon.com/sp/magento)
 ### Configure Magento
 * The plugin is configured under **System**->**Configuration**->**Payment Methods**->**Amazon Payments**.
 * If you haven't already registered, use the link in the module to create an Amazon Payments account.
-   * The new and improved registration system will automaticaly exchange your Amazon Payments account keys, provided you have SSL enabled for your admin. 
-   * If you dont have SSL enabled, copy and paste the encrypted keys string and the end of the registration flow into the configuration and it will automatically set up your keys as well.
+   * The new and improved registration system will automaticaly exchange your Amazon Pay account keys, provided you have SSL enabled for your admin. 
+   * If you don't have SSL enabled, copy and paste the encrypted keys string and the end of the registration flow into the configuration and it will automatically set up your keys as well.
 
 ## Release Notes
 ### v1.4.0 Automated key exchange, new streamlined registration, condensed UI

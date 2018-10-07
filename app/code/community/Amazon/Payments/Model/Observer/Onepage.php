@@ -46,7 +46,7 @@ class Amazon_Payments_Model_Observer_Onepage
         $session = $observer->getEvent()->getCheckoutSession();
 
         $action = Mage::app()->getFrontController()->getAction()->getFullActionName();
-        $action_reset = array('opc_index_index', 'firecheckout_index_index');
+        $action_reset = array('opc_index_index');
 
         if (in_array($action, $action_reset) && $session && $session->getCheckoutState() == 'begin' && $session->getAmazonAddressId() && $session->getQuoteId() && $this->_quote === null) {
 

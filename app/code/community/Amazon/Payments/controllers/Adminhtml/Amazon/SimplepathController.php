@@ -61,4 +61,13 @@ class Amazon_Payments_Adminhtml_Amazon_SimplepathController extends Mage_Adminht
         }
     }
 
+    /**
+     * Acl checking
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('system/config/amazon_payments');
+    }
 }

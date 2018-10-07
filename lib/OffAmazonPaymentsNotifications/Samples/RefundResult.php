@@ -46,7 +46,7 @@ class RefundResult extends WebServerExample
         $this->exampleClass = new RefundExample(
             new OffAmazonPaymentsService_Client(),
             $this->queryStringParams['orderReferenceId'], 
-            $this->queryStringParams['amazonCaptureId'],
+            $this->queryStringParams['amazonCaptureId']
         );
     }
     

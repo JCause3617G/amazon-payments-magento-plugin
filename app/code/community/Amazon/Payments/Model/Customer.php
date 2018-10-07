@@ -10,14 +10,16 @@
 
 class Amazon_Payments_Model_Customer extends Mage_Customer_Model_Customer
 {
+    protected $isRedirect = false;
+
     /**
      * Log user in via Amazon token
      *
-     * @param string $token
+     * @param $token
      *   Amazon Access Token
-     * @return object $customer
+     * @return $this
      */
-    public function loginWithToken($token, $redirectOnVerify = '')
+    public function loginWithToken($token)
     {
         $amazonProfile = $this->getAmazonProfile($token);
 
@@ -39,13 +41,8 @@ class Amazon_Payments_Model_Customer extends Mage_Customer_Model_Customer
             // must be verified, as Amazon does not verify email addresses.
             if (!$row->getLoginId() && $this->getId()) {
                 Mage::getSingleton('checkout/session')->setAmazonAccessTokenVerify($token);
-
-                Mage::app()->getResponse()
-                    ->setRedirect(Mage::helper('amazon_payments')->getVerifyUrl() . '?redirect=' . $redirectOnVerify, 301)
-                    ->sendResponse();
-
-                exit;
-
+                $this->isRedirect = true;
+                return $this;
             }
             // Create account if applicable and log user in
             else {
@@ -63,6 +60,14 @@ class Amazon_Payments_Model_Customer extends Mage_Customer_Model_Customer
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRedirect()
+    {
+        return $this->isRedirect;
     }
 
     /**
